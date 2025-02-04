@@ -5,10 +5,14 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -46,7 +50,7 @@ fun MeditationScreen(modifier:Modifier = Modifier) {
         SearchBar()
         TagsSection(MockData.meditationTags)
         CurrentMeditation(MockData.meditations.random())
-        MeditationGrid()
+        MeditationsGrid(MockData.meditations)
     }
 }
 
@@ -121,9 +125,23 @@ fun CurrentMeditation(meditation: Meditation)
 }
 
 @Composable
-fun MeditationGrid()
+fun MeditationsGrid(meditations: List<Meditation>)
 {
+    LazyVerticalGrid(
+        modifier = Modifier.fillMaxHeight(),
+        columns = GridCells.Fixed(2)
+    ) {
+        items(meditations) {
+            // TODO: CardMediation
+            MeditationCard(it)
+        }
+    }
+}
 
+@Composable
+fun MeditationCard(meditation: Meditation)
+{
+    Text(text = meditation.title)
 }
 
 @Composable
