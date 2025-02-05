@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -15,8 +16,11 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
@@ -27,14 +31,17 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ca.qc.cstj.composables.R
 import ca.qc.cstj.composables.core.extensions.colorPaths
 import ca.qc.cstj.composables.data.MockData
@@ -113,7 +120,7 @@ fun CurrentMeditation(meditation: Meditation)
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp, vertical = 16.dp)
                 .drawBehind {
-                    val(mediumColoredPath, lightColoredPath) = colorPaths(size.width, size.height)
+                    val (mediumColoredPath, lightColoredPath) = colorPaths(size.width, size.height)
                     drawPath(path = mediumColoredPath, color = meditation.colors.second)
                     drawPath(path = lightColoredPath, color = meditation.colors.third)
                 }
@@ -127,21 +134,63 @@ fun CurrentMeditation(meditation: Meditation)
 @Composable
 fun MeditationsGrid(meditations: List<Meditation>)
 {
-    LazyVerticalGrid(
-        modifier = Modifier.fillMaxHeight(),
-        columns = GridCells.Fixed(2)
-    ) {
-        items(meditations) {
-            // TODO: CardMediation
-            MeditationCard(it)
+        Text(text = stringResource(R.string.features),
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.padding(vertical = 16.dp))
+        LazyVerticalGrid(
+            modifier = Modifier.fillMaxHeight(),
+            columns = GridCells.Fixed(2),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(meditations) {
+                MeditationCard(it)
+            }
         }
-    }
 }
 
 @Composable
 fun MeditationCard(meditation: Meditation)
 {
-    Text(text = meditation.title)
+    Card(
+        modifier = Modifier
+            .aspectRatio(1.5f),
+        colors = CardDefaults.cardColors(
+            containerColor = meditation.colors.first
+        )
+    ){
+        Column (
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .padding(10.dp)
+                .drawBehind {
+                    val (mediumColoredPath, lightColoredPath) = colorPaths(size.width, size.height)
+                    drawPath(path = mediumColoredPath, color = meditation.colors.second)
+                    drawPath(path = lightColoredPath, color = meditation.colors.third)
+                },
+                verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(text = meditation.title, style = MaterialTheme.typography.headlineMedium, lineHeight = 22.sp)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                ,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Icon(
+                    contentDescription = meditation.title,
+                    imageVector = meditation.icon
+                )
+                Button(
+                    colors = ButtonDefaults.buttonColors(containerColor = ButtonBlue, contentColor = TextWhite),
+                    onClick = {},
+
+                ) { Text(text = stringResource(R.string.start), fontSize = 14.sp, fontWeight = FontWeight.Bold) }
+            }
+        }
+    }
 }
 
 @Composable
