@@ -42,6 +42,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ca.qc.cstj.composables.R
 import ca.qc.cstj.composables.core.extensions.colorPaths
 import ca.qc.cstj.composables.data.MockData
@@ -52,19 +54,26 @@ import ca.qc.cstj.composables.ui.theme.DarkerButtonBlue
 import ca.qc.cstj.composables.ui.theme.TextWhite
 
 @Composable
-fun MeditationScreen(modifier:Modifier = Modifier) {
+fun MeditationScreen(modifier:Modifier = Modifier,
+                     viewModel: MeditationScreenViewModel = viewModel()
+) {
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+
     Column(modifier = modifier.padding(12.dp)){
-        SearchBar()
+        SearchBar(uiState.searchValue, onSearch = { newValue -> viewModel.updateSearchValue(newValue)})
         TagsSection(MockData.meditationTags)
-        CurrentMeditation(MockData.meditations.random())
+        CurrentMeditation(uiState.currentMeditation)
         MeditationsGrid(MockData.meditations)
     }
 }
 
 @Composable
-fun SearchBar() {
-    TextField(value = "",
-        onValueChange = {},
+fun SearchBar(
+    searchValue : String = "",
+    onSearch: (String) -> Unit
+) {
+    TextField(value = searchValue,
+        onValueChange = { newValue -> onSearch(newValue)},
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
