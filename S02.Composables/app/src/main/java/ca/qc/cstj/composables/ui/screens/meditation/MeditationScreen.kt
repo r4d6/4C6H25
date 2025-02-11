@@ -61,9 +61,9 @@ fun MeditationScreen(modifier:Modifier = Modifier,
 
     Column(modifier = modifier.padding(12.dp)){
         SearchBar(uiState.searchValue, onSearch = { newValue -> viewModel.updateSearchValue(newValue)})
-        TagsSection(MockData.meditationTags)
+        TagsSection(tags = uiState.tags, selectedTag = uiState.selectedTag, onTagClick = {viewModel.changeSelectedTag(it)})
         CurrentMeditation(uiState.currentMeditation)
-        MeditationsGrid(MockData.meditations)
+        MeditationsGrid(uiState.meditations, {viewModel.startMeditation(it)})
     }
 }
 
@@ -94,15 +94,15 @@ fun SearchBar(
 }
 
 @Composable
-fun TagsSection(tags: List<String>){
+fun TagsSection(tags: List<String>, selectedTag:String, onTagClick:(String) -> Unit){
     LazyRow (
         modifier = Modifier.padding(vertical = 4.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ){
         items(tags) {
             FilterChip(
-                selected = false,
-                onClick = {},
+                selected = it==selectedTag,
+                onClick = {onTagClick(it)},
                 label = {Text(text=it, style = MaterialTheme.typography.bodySmall)},
                 colors = FilterChipDefaults.filterChipColors(containerColor = DarkerButtonBlue, selectedContainerColor = ButtonBlue),
                 border = FilterChipDefaults.filterChipBorder(
@@ -141,7 +141,7 @@ fun CurrentMeditation(meditation: Meditation)
 }
 
 @Composable
-fun MeditationsGrid(meditations: List<Meditation>)
+fun MeditationsGrid(meditations: List<Meditation>, onStartMeditation:(Meditation) -> Unit)
 {
         Text(text = stringResource(R.string.features),
             style = MaterialTheme.typography.headlineMedium,
@@ -153,13 +153,13 @@ fun MeditationsGrid(meditations: List<Meditation>)
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(meditations) {
-                MeditationCard(it)
+                MeditationCard(it, onStartMeditation)
             }
         }
 }
 
 @Composable
-fun MeditationCard(meditation: Meditation)
+fun MeditationCard(meditation: Meditation, onStartMeditation:(Meditation) -> Unit)
 {
     Card(
         modifier = Modifier
@@ -194,7 +194,7 @@ fun MeditationCard(meditation: Meditation)
                 )
                 Button(
                     colors = ButtonDefaults.buttonColors(containerColor = ButtonBlue, contentColor = TextWhite),
-                    onClick = {},
+                    onClick = {onStartMeditation(meditation)},
 
                 ) { Text(text = stringResource(R.string.start), fontSize = 14.sp, fontWeight = FontWeight.Bold) }
             }

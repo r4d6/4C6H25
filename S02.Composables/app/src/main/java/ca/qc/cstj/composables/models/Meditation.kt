@@ -25,7 +25,7 @@ import kotlin.random.Random
 data class Meditation(
     public val title: String,
     public val duration: Int = (1 .. 10).random(),
-    private val _tags: List<String> = MockData.meditationTags.shuffled().take(Random.nextInt(2, 5)),
+    public val tags: List<String> = MockData.meditationTags.shuffled().take(Random.nextInt(2, 5)),
     private val _icon: String = MockData.meditationIcons.random(),
     private val _color: String = MockData.meditationColors.random()
 

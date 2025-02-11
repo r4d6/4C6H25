@@ -5,5 +5,8 @@ import ca.qc.cstj.composables.models.Meditation
 
 data class MeditationScreenUIState(
     val searchValue:String = "",
-    val currentMeditation:Meditation = MockData.meditations.random()
+    val currentMeditation:Meditation = MockData.meditations.random(),
+    val meditations: List<Meditation> = listOf(),
+    val selectedTag: String = MockData.meditationTags.random(),
+    val tags: List<String> = listOf()
 )
