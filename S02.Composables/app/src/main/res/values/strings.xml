@@ -11,4 +11,8 @@
     <string name="music">Music</string>
     <string name="sleep">Sleep</string>
     <string name="meditate">Meditate</string>
+    <string name="knight">Knight</string>
+    <string name="login">Login</string>
+    <string name="name">Name</string>
+    <string name="password">Password</string>
 </resources>
