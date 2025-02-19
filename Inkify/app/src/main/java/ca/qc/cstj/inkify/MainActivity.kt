@@ -10,10 +10,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ca.qc.cstj.inkify.ui.navigation.Destination
+import ca.qc.cstj.inkify.ui.screens.add.AddNoteScreen
 import ca.qc.cstj.inkify.ui.screens.list.NotesListScreen
 import ca.qc.cstj.inkify.ui.theme.InkifyTheme
 
@@ -31,10 +33,10 @@ class MainActivity : ComponentActivity() {
                 )
                 {
                     composable<Destination.NotesList>{
-                        NotesListScreen()
+                        NotesListScreen(toAddNoteScreen = {navController.navigate(Destination.AddNote)})
                     }
                     composable<Destination.AddNote>{
-
+                        AddNoteScreen()
                     }
                     composable<Destination.Settings>{
 
