@@ -45,7 +45,7 @@ fun AddNoteScreen(
     Scaffold(modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {}
+                onClick = {viewModel.save()}
             ) {
                 Icon(imageVector = Icons.Filled.Save, contentDescription = Icons.Filled.Save.name)
             }
