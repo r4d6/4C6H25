@@ -38,14 +38,16 @@ import ca.qc.cstj.inkify.core.Constants
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddNoteScreen(
-    viewModel: AddNoteScreenViewModel = viewModel()
+    viewModel: AddNoteScreenViewModel = viewModel(),
+    toNotesListScreen: () -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsState().value
 
     Scaffold(modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {viewModel.save()}
+                onClick = {viewModel.save()
+                    toNotesListScreen()}
             ) {
                 Icon(imageVector = Icons.Filled.Save, contentDescription = Icons.Filled.Save.name)
             }

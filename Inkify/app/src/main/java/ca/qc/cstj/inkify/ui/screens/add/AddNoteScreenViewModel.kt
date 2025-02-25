@@ -50,6 +50,12 @@ class AddNoteScreenViewModel(application: Application)
         viewModelScope.launch {
             try {
                 noteRepository.create(_uiState.value.newNote)
+                _uiState.update {
+                    val note = _uiState.value.newNote
+                    _uiState.value.copy(
+                        newNote = note.copy(title = "", content = "")
+                    )
+                }
             } catch(ex: Exception)
             {
 
