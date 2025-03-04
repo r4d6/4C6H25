@@ -87,7 +87,7 @@ fun SettingsScreen(
                 )
                 {
                     Box(modifier = Modifier.padding(end = 8.dp, top = 8.dp).size(80.dp)
-                        .clip(CircleShape).background(it.toColor).clickable { }) {
+                        .clip(CircleShape).background(it.toColor).clickable { viewModel.updateColor(it)}) {
                         if (uiState.settings.noteDefaultColor == it) {
                             Icon(
                                 imageVector = Icons.Sharp.CheckCircle,
@@ -99,7 +99,7 @@ fun SettingsScreen(
                     }
                 }
             }
-            ElevatedButton(onClick = { }) { Text(text = stringResource(R.string.reset)) }
+            ElevatedButton(onClick = { viewModel.reset()}) { Text(text = stringResource(R.string.reset)) }
         }
     }
 }
