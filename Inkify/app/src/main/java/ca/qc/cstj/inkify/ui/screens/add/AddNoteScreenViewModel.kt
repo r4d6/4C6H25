@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ca.qc.cstj.inkify.data.database.AppDatabase
+import ca.qc.cstj.inkify.models.Note
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -61,5 +62,10 @@ class AddNoteScreenViewModel(application: Application)
 
             }
         }
+    }
+
+    sealed class SideEffect {
+        data class NotedSaved(val note:Note): SideEffect()
+        data object NotedError : SideEffect()
     }
 }
